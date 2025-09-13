@@ -34,7 +34,7 @@ const saveBtn = document.getElementById('saveBtn');
 
 let sessionCount = 0;
 let currentUid = null;
-
+let isAdmin = false
 // ---------- 匿名登入並監聽 auth 狀態 ----------
 signInAnonymously(auth)
   .then(() => console.log('匿名登入開始（如果尚未登入，系統會在後台建立匿名使用者）'))
@@ -48,8 +48,7 @@ signInAnonymously(auth)
 // import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // 全域變數（若你原本有不同名稱，請對應調整）
-let currentUid = null;
-let isAdmin = false;
+
 
 /**
  * onAuthStateChanged: 監聽 auth 狀態變化
@@ -193,6 +192,7 @@ onSnapshot(leaderboardQuery, snapshot => {
 function escapeHtml(s = '') {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
+
 
 
 
