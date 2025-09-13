@@ -21,7 +21,7 @@ const auth = getAuth();
 
 signInAnonymously(auth)
   .then(() => console.log('匿名登入成功'))
-  .catch(err => console.error('匿名登入失敗', err));
+  
 
 
 const btn = document.getElementById('knockBtn');
@@ -68,10 +68,7 @@ saveBtn.addEventListener('click', async () => {
     sessionCount = 0;
     countSpan.textContent = 0;
     nameInput.value = '';
-  } catch(e) {
-    console.error(e);
-    alert('上榜失敗，請稍後再試');
-  }
+  } 
 });
 
 
@@ -93,5 +90,6 @@ onSnapshot(leaderboardQuery, snapshot => {
     board.appendChild(div);
   });
 });
+
 
 
