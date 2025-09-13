@@ -10,12 +10,12 @@ import {
 
 // ------------------ TODO: 填入你的 Firebase config ------------------
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+ apiKey: "AIzaSyD2EQ5DmELxioh-1TwbJr9OOi86Blb7YbY",
+  authDomain: "clickweb-1e245.firebaseapp.com",
+  projectId: "clickweb-1e245",
+  storageBucket: "clickweb-1e245.firebasestorage.app",
+  messagingSenderId: "43331920268",
+  appId: "1:43331920268:web:8650db43411e167afeb6a9",
 };
 // -----------------------------------------------------------------
 
@@ -155,4 +155,5 @@ onSnapshot(leaderboardQuery, snapshot => {
 function escapeHtml(s = '') {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
+
 
