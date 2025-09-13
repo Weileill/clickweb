@@ -1,35 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>敲木魚</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>敲木魚 — by weileiliang</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- 左上角簽名 -->
   <div class="header">by weileiliang</div>
 
-  <main class="container">
-    <button id="knockBtn">敲一下</button>
-    <div class="counter">次數：<span id="count">0</span></div>
+  <main class="container" role="main" aria-label="敲木魚主區">
+    <h1 style="display:none">敲木魚</h1>
 
-    <div class="input-area">
-      <input type="text" id="nameInput" placeholder="輸入暱稱">
-      <button id="saveBtn">上榜</button>
-    </div>
+    <!-- 互動區 -->
+    <section class="panel interaction" aria-label="互動區">
+      <button id="knockBtn" class="muyu-btn" aria-label="敲木魚按鈕">敲一下</button>
 
-    <section class="leaderboard" id="board">
-      <!-- 排行榜會自動生成 -->
+      <div class="counter" aria-live="polite">
+        次數：<strong id="count">0</strong>
+      </div>
+
+      <div class="input-area" aria-label="上榜輸入">
+        <input id="nameInput" type="text" placeholder="輸入暱稱（上榜用）" autocomplete="name" />
+        <button id="saveBtn" class="primary-btn">上榜</button>
+      </div>
+
+      <div class="audio-controls" style="margin-top:10px;">
+        <label for="vol">音量</label>
+        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.9" />
+        <label style="margin-left:10px"><input id="mute" type="checkbox" /> 靜音</label>
+      </div>
     </section>
 
-    <div class="notes">
-      <small>提示：你只能刪除自己上傳的榜單。</small>
-    </div>
+    <!-- 排行榜 -->
+    <aside class="panel leaderboard" aria-label="排行榜">
+      <h2 style="margin-top:0">排行榜</h2>
+      <div id="board" class="board-list" aria-live="polite">
+        <!-- leaderboard 會由 script.js 動態生成 -->
+      </div>
+
+      <div class="board-actions" style="margin-top:12px;">
+        <button id="exportCSV" class="small-btn">匯出 CSV</button>
+        <button id="demoData" class="small-btn">生成示範資料</button>
+      </div>
+    </aside>
   </main>
 
+  <!-- 音檔（請把 sound.mp3 放在同一資料夾） -->
   <audio id="muyuSound" src="sound.mp3" preload="auto"></audio>
 
-  <!-- main script (module required for firebase imports) -->
-  <script type="module" src="script.js"></script>
-</body>
-</html>
+  <!-- script 必須是 module（script.js 內有 fi
