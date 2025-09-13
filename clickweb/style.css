@@ -1,95 +1,82 @@
 :root {
-  --bg: #f5f5f5;
+  --bg: #FFF8E1; /* 你先前選的柔和金色 */
   --primary: #ff6b6b;
   --secondary: #333;
   --accent: #ffa502;
+  --muted: #6b4b2a;
 }
 
+* { box-sizing: border-box; }
+html,body { height: 100%; }
 body {
   font-family: "Noto Sans", "Microsoft JhengHei", sans-serif;
   background: var(--bg);
   margin: 0;
   padding: 20px;
+  color: var(--muted);
 }
 
+/* 左上角簽名 */
 .header {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 14px;
-  color: var(--secondary);
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,0.85);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  z-index: 999;
 }
 
+/* 主體容器 */
 .container {
-  max-width: 400px;
-  margin: 80px auto 0;
+  max-width: 420px;
+  margin: 90px auto 40px;
   text-align: center;
+  padding: 18px;
+  border-radius: 12px;
 }
 
+/* 敲木魚按鈕 */
 #knockBtn {
   font-size: 24px;
-  padding: 20px 40px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 12px;
+  padding: 22px 36px;
+  background: linear-gradient(180deg,#fff 0%,#f3e7d3 100%);
+  border: 0;
+  border-radius: 14px;
+  color: var(--secondary);
   cursor: pointer;
-  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(101,67,33,0.12);
+  font-weight: 700;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+#knockBtn:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(101,67,33,0.14); }
+#knockBtn:active { transform: scale(.98); }
+
+/* 計數 */
+.counter { font-size: 18px; margin: 14px 0 18px; font-weight:700; color:#7b3f00; }
+
+/* 輸入區 */
+.input-area { display:flex; justify-content:center; gap:10px; margin-bottom: 16px; }
+#nameInput { padding:8px; border-radius:8px; border:1px solid #ddd; width:180px; }
+#saveBtn { padding:8px 14px; border-radius:8px; border:none; background:var(--accent); color:#fff; cursor:pointer; }
+
+/* 排行榜 */
+.leaderboard { text-align:left; margin-top: 10px; }
+.board-row { display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background:linear-gradient(180deg,#fff,#f8f5ee); margin-bottom:8px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.02); }
+.left { display:flex; gap:12px; align-items:center; }
+.rank { width:36px; height:36px; border-radius:8px; background:#fde68a; display:flex; align-items:center; justify-content:center; font-weight:800; color:#6b3e00; }
+.meta .name { font-weight:700; color:#4b2f12; }
+.meta .score { font-size:12px; color:#7b5a3c; }
+.row-actions button { margin-left:8px; padding:8px 10px; border-radius:8px; border:1px solid #eee; background:#fff; cursor:pointer; }
+
+.notes { margin-top:12px; color:#6b4b2a; font-size:12px; text-align:center; }
+
+/* 響應式 */
+@media (max-width:480px) {
+  .container { margin: 70px 12px; }
+  #knockBtn { width: 100%; padding: 18px; }
+  .input-area { flex-direction:column; gap:8px; }
 }
 
-#knockBtn:hover {
-  background: var(--accent);
-}
-
-.counter {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.input-area {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-#nameInput {
-  padding: 8px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-#saveBtn {
-  padding: 8px 16px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: none;
-  background: var(--accent);
-  color: white;
-  cursor: pointer;
-}
-
-#saveBtn:hover {
-  background: var(--primary);
-}
-
-.leaderboard {
-  text-align: left;
-}
-
-.board-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-.rank {
-  font-weight: bold;
-}
-
-.meta {
-  display: flex;
-  gap: 20px;
-}
