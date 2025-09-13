@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>敲木魚</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="script.js"></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="header">by weileiliang</div>
+  <div class="header">by weileiliang</div>
 
-  <div class="container">
+  <main class="container">
     <button id="knockBtn">敲一下</button>
-    <span id="count">0</span>
-    <input id="nameInput" placeholder="輸入暱稱">
-    <button id="saveBtn">上榜</button>
+    <div class="counter">次數：<span id="count">0</span></div>
 
-    <div id="board" class="leaderboard"></div>
-  </div>
+    <div class="input-area">
+      <input type="text" id="nameInput" placeholder="輸入暱稱">
+      <button id="saveBtn">上榜</button>
+    </div>
 
-  <audio id="muyuSound" src="sound.mp3"></audio>
+    <section class="leaderboard" id="board">
+      <!-- 排行榜會自動生成 -->
+    </section>
+
+    <div class="notes">
+      <small>提示：你只能刪除自己上傳的榜單。</small>
+    </div>
+  </main>
+
+  <audio id="muyuSound" src="sound.mp3" preload="auto"></audio>
+
+  <!-- main script (module required for firebase imports) -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
