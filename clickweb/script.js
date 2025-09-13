@@ -1,33 +1,65 @@
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD2EQ5DmELxioh-1TwbJr9OOi86Blb7YbY",
+  authDomain: "clickweb-1e245.firebaseapp.com",
+  projectId: "clickweb-1e245",
+  storageBucket: "clickweb-1e245.firebasestorage.app",
+  messagingSenderId: "43331920268",
+  appId: "1:43331920268:web:8650db43411e167afeb6a9",
+  measurementId: "G-9C2W7VPCHX"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth();
+
+
+signInAnonymously(auth)
+  .then(() => console.log('匿名登入成功'))
+  .catch(err => console.error('匿名登入失敗', err));
+
+
 const btn = document.getElementById('knockBtn');
 const countSpan = document.getElementById('count');
 const nameInput = document.getElementById('nameInput');
 const board = document.getElementById('board');
 const audio = document.getElementById('muyuSound');
+const saveBtn = document.getElementById('saveBtn');
+
 let sessionCount = 0;
 
 
 function playSound() {
   if (audio && audio.src) {
     audio.currentTime = 0;
-    audio.play().catch(()=>{}); 
+    audio.play().catch(()=>{});
   }
 }
 
 
-btn.addEventListener('click', ()=>{
+btn.addEventListener('click', () => {
   sessionCount++;
   countSpan.textContent = sessionCount;
   playSound();
 });
 
 
-document.getElementById('saveBtn').addEventListener('click', async ()=>{
+saveBtn.addEventListener('click', async () => {
   const name = nameInput.value.trim() || '匿名';
   const score = sessionCount;
-  if(score===0) return alert('不會先敲一下嗎sb');
-  
+
+  if(score === 0) {
+    alert('還沒敲木魚，不能上榜！');
+    return;
+  }
+
   try {
-    await window.firebaseDB && addDoc(collection(window.firebaseDB,'leaderboard'),{
+    await addDoc(collection(db, 'leaderboard'), {
       name,
       score,
       timestamp: Date.now()
@@ -35,31 +67,31 @@ document.getElementById('saveBtn').addEventListener('click', async ()=>{
     alert('已上榜！');
     sessionCount = 0;
     countSpan.textContent = 0;
-  } catch(e){
+    nameInput.value = '';
+  } catch(e) {
     console.error(e);
-    alert('失敗，請稍後再試');
+    alert('上榜失敗，請稍後再試');
   }
 });
 
 
-if(window.firebaseDB){
-  const q = query(collection(window.firebaseDB,'leaderboard'), orderBy('score','desc'), limit(10));
-  onSnapshot(q, snapshot=>{
-    board.innerHTML = '';
-    snapshot.docs.forEach((doc,i)=>{
-      const data = doc.data();
-      const div = document.createElement('div');
-      div.className = 'board-row';
-      div.innerHTML = `
-        <div class="left">
-          <div class="rank">${i+1}</div>
-          <div class="meta">
-            <div class="name">${data.name}</div>
-            <div class="score">${data.score}</div>
-          </div>
-        </div>
-      `;
-      board.appendChild(div);
-    });
+const leaderboardQuery = query(collection(db, 'leaderboard'), orderBy('score','desc'), limit(10));
+
+onSnapshot(leaderboardQuery, snapshot => {
+  board.innerHTML = ''; 
+  snapshot.docs.forEach((doc, i) => {
+    const data = doc.data();
+    const div = document.createElement('div');
+    div.className = 'board-row';
+    div.innerHTML = `
+      <div class="rank">${i+1}</div>
+      <div class="meta">
+        <div class="name">${data.name}</div>
+        <div class="score">${data.score}</div>
+      </div>
+    `;
+    board.appendChild(div);
   });
-}
+});
+
+
