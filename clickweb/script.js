@@ -2,7 +2,7 @@
 // ================= Firebase Modules (ES Module) =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
-  getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc, doc
+  getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc, doc, getDoc
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import {
   getAuth, signInAnonymously, onAuthStateChanged
@@ -43,15 +43,53 @@ signInAnonymously(auth)
     alert('匿名登入失敗：' + err.message);
   });
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    currentUid = user.uid;
-    console.log('auth ready, uid=', currentUid);
-  } else {
+// 如果還沒 import，請確保有以下 import（若已在檔案頂端引入則不需重複）
+// import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+// import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+// 全域變數（若你原本有不同名稱，請對應調整）
+let currentUid = null;
+let isAdmin = false;
+
+/**
+ * onAuthStateChanged: 監聽 auth 狀態變化
+ * - 取得 currentUid
+ * - 查詢 /admins/{uid} 文件，判斷 isAdmin
+ * - 成功後會呼叫 refreshBoard()（若你有實作）來重繪排行榜（顯示或隱藏刪除按鈕）
+ */
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    // 使用者登出或尚未登入
     currentUid = null;
-    console.log('使用者已登出或尚未登入');
+    isAdmin = false;
+    console.log('[auth] 未登入');
+    // 若有重繪函式，呼叫它
+    if (typeof refreshBoard === 'function') refreshBoard();
+    return;
+  }
+
+  // 有 user（匿名或已登入）
+  currentUid = user.uid;
+  console.log('[auth] 已登入 uid=', currentUid, '（檢查是否為 admin）');
+
+  try {
+    // 從 admins collection 檢查該 uid 是否為 admin
+    const adminRef = doc(db, 'admins', currentUid);
+    const adminSnap = await getDoc(adminRef);
+    isAdmin = adminSnap.exists() && adminSnap.data().isAdmin === true;
+    console.log('[auth] isAdmin =', isAdmin);
+  } catch (err) {
+    console.error('[auth] 檢查 admin 失敗：', err);
+    isAdmin = false;
+  }
+
+  // 如果你有一個重新渲染排行榜的函式，呼叫它讓畫面立即更新（顯示/隱藏刪除按鈕）
+  // 例如：function refreshBoard() { /* 重新用 snapshot 資料渲染 DOM */ }
+  if (typeof refreshBoard === 'function') {
+    try { refreshBoard(); } catch(e) { console.warn('refreshBoard failed', e); }
   }
 });
+
 
 // ========== 音效播放（簡單備援） ==========
 function playSound() {
@@ -155,5 +193,6 @@ onSnapshot(leaderboardQuery, snapshot => {
 function escapeHtml(s = '') {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
+
 
 
