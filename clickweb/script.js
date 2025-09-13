@@ -6,7 +6,7 @@ import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9
 
 // --------- 填入你的 Firebase config ----------
 const firebaseConfig = {
- apiKey: "AIzaSyD2EQ5DmELxioh-1TwbJr9OOi86Blb7YbY",
+  apiKey: "AIzaSyD2EQ5DmELxioh-1TwbJr9OOi86Blb7YbY",
   authDomain: "clickweb-1e245.firebaseapp.com",
   projectId: "clickweb-1e245",
   storageBucket: "clickweb-1e245.firebasestorage.app",
@@ -93,6 +93,7 @@ onSnapshot(leaderboardQuery, snapshot => {
     board.appendChild(div);
   });
 });
+
 
 
 
